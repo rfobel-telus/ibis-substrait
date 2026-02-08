@@ -202,6 +202,10 @@ class FunctionEntry:
 
 
 def _parse_func(entry: Mapping[str, Any]) -> Iterator[FunctionEntry]:
+    # Guard against malformed YAML entries (e.g., strings instead of dicts)
+    if not isinstance(entry, dict):
+        return
+
     for impl in entry.get("impls", []):
         sf = FunctionEntry(entry["name"])
         sf.parse(impl)
